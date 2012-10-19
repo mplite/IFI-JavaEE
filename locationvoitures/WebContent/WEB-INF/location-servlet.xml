@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+                        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.0.xsd">
+
+	<!--  Description du webservice
+	 -->
+	 
+	 <bean id="webServiceClient" class="WebServiceClient">
+        <property name="defaultUri" value="http://localhost:8080/WebserviceEtudiant"/>
+    </bean>
+	
+	
+	<!-- les mappings de l'application
+	     Ce sont les mappings url vers controller.
+	-->
+	<bean
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<props>
+				<prop key="/listePersonnes.html">ListePersonnesController</prop>
+				<prop key="/saisiePersonne.html">SaisiePersonneController</prop>
+				<prop key="/listeVoitures.html">ListeVoituresController</prop>
+				<prop key="/saisieVoiture.html">SaisieVoitureController</prop>
+				<prop key="/reservation.html">ReservationController</prop>
+			</props>
+		</property>
+	</bean>
+
+	
+	
+	<!-- le resolveur de vues -->
+	<bean class="org.springframework.web.servlet.view.ResourceBundleViewResolver">
+		<property name="basename">
+			<value>vues</value>
+		</property>
+	</bean>
+
+	
+	<!-- les controleurs -->
+	<bean id="SaisiePersonneController" class="web.SaisiePersonneController">
+		<property name="sessionForm">
+			<value>true</value>
+		</property>
+		<property name="formView">
+			<value>saisirPersonne</value>
+		</property>
+		<property name="validator">
+			<ref bean="ValidatePersonne"></ref>
+		</property>
+		<property name="commandName">
+			<value>personne</value>
+		</property>
+		<property name="fabPersonnes">
+			<ref bean="fabriquePersonne" />
+		</property>
+	</bean>
+	
+	<bean id="SaisieVoitureController" class="web.SaisieVoitureController">
+		<property name="sessionForm">
+			<value>true</value>
+		</property>
+		<property name="formView">
+			<value>saisirVoiture</value>
+		</property>
+		<property name="validator">
+			<ref bean="ValidateVoiture"></ref>
+		</property>
+		<property name="commandName">
+			<value>voiture</value>
+		</property>
+		<property name="fabVoitures">
+			<ref bean="fabriqueVoiture" />
+		</property>
+	</bean>
+	
+	<bean id="ListePersonnesController"
+		class="web.ListePersonnesController">
+		<property name="methodNameResolver">
+			<ref local="ListeMethodNameResolver"/>
+		</property>	
+		<property name="fabPersonnes">
+			<ref bean="fabriquePersonne" />
+		</property>
+	</bean>
+	<bean id="ListeVoituresController"
+		class="web.ListeVoituresController">
+		<property name="methodNameResolver">
+			<ref local="ListeMethodNameResolver"/>
+		</property>	
+		<property name="fabVoitures">
+			<ref bean="fabriqueVoiture" />
+		</property>
+	</bean>
+	<bean id="ReservationController"
+		class="web.ReservationController">
+		<property name="methodNameResolver">
+			<ref local="ReservationMethodNameResolver"/>
+		</property>	
+		<property name="fabPersonnes">
+			<ref bean="fabriquePersonne" />
+		</property>
+		<property name="fabVoitures">
+			<ref bean="fabriqueVoiture" />
+		</property>
+	</bean>
+	
+		<!-- le validator -->
+	<bean id="ValidatePersonne" class="web.ValidatePersonne" />
+	<bean id="ValidateVoiture" class="web.ValidateVoiture" />
+	
+	<!-- Liste des actions des Multiaction controller -->
+	
+	<bean id="ListeMethodNameResolver" class="org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver">
+		<property name="defaultMethodName">
+			<value>list</value>
+		</property>
+		<property name="methodParamNames">
+			<list>
+				<value>ajout</value>
+				<value>voir</value>
+			</list>
+			
+		</property>
+	</bean>
+	
+	<bean id="ReservationMethodNameResolver" class="org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver">
+		<property name="defaultMethodName">
+			<value>list</value>
+		</property>
+		<property name="methodParamNames">
+			<list>
+				<value>choixVoiture</value>
+				<value>choixPersonne</value>
+				<value>voirVoiture</value>
+				<value>voirPersonne</value>
+				<value>confirmer</value>
+				<value>annuler</value>
+			</list>
+			
+		</property>
+	</bean>
+	
+	<!-- couche métier -->
+	
+	<!-- les fabriques -->
+	<bean id="fabriquePersonne" class="metier.FabPersonne">
+		<property name="personnes">
+			<map>
+				<entry> 
+					<key> <value>Dupont</value></key> 
+				    <ref local="PersonneDupont" /> 
+				</entry>
+				<entry> 
+					<key> <value>Durant</value></key> 
+				    <ref local="PersonneDurant" /> 
+				</entry>
+			</map>
+		</property>	
+	</bean>
+	<bean id="fabriqueVoiture" class="metier.FabVoiture">
+		<property name="voitures">
+			<map>
+				<entry> 
+					<key> <value>CZ-456-AH</value></key> 
+				    	<ref local="voiture1" /> 
+				</entry>
+				<entry> <key> <value>XY-123-GB</value></key> 
+				    <ref local="voiture2" /> 
+				</entry>
+			</map>
+		</property>	
+	</bean>	
+
+	<!-- les objets -->
+	<bean id="PersonneDupont" class="metier.Personne">
+		<property name="nom" value="Dupont" />
+		<property name="prenom" value="Laurent" />    
+	</bean>
+	<bean id="PersonneDurant" class="metier.Personne">
+		<property name="nom" value="Durant" />
+		<property name="prenom" value="Sophie" />    
+	</bean>
+	<bean id="voiture1" class="metier.Voiture">
+		<property name="id" value="CZ-456-AH" />
+		<property name="modele" value="Clio" />    
+		<property name="couleur" value="rouge" />    
+	</bean>
+	<bean id="voiture2" class="metier.Voiture">
+		<property name="id" value="XY-123-GB" />
+		<property name="modele" value="Porsche" />    
+		<property name="couleur" value="grise" />       
+	</bean>	
+	
+</beans>
