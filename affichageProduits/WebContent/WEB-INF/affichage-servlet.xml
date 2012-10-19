@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+                        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.0.xsd">
+
+	<!-- les mappings externalisees de l'application -->
+	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<bean
+				class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+				<property name="location">
+					<value>mappings.properties</value>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<!-- les controleurs de l'application -->
+
+
+	<bean id="AjoutController" class="web.AjoutController">
+		<property name="groupe">
+			<ref bean="groupe" />
+		</property>
+		<property name="sessionForm">
+			<value>true</value>
+		</property>
+		<property name="validator">
+			<ref bean="validproduit" />
+		</property>
+		<property name="formView">
+			<value>formulaire</value>
+		</property>
+		<property name="commandName">
+			<value>commandAjout</value>
+		</property>
+	</bean>
+	
+	<bean id="AffichageController" class="web.Affichage">
+		<property name="groupe">
+			<ref bean="groupe" />
+		</property>
+	</bean>
+
+	<!-- le validator -->
+	<bean id="validproduit" class="web.ValidateProduit" />
+
+	<!-- le resolveur de vues externalisees -->
+	<bean class="org.springframework.web.servlet.view.XmlViewResolver">
+		<property name="location">
+			<value>/WEB-INF/vues/vues.xml</value>
+		</property>
+	</bean>
+
+	<!-- le fichier des messages -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename">
+			<value>messages</value>
+		</property>
+	</bean>
+
+	
+</beans>

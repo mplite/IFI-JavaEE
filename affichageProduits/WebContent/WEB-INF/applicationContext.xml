@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ISO_8859-1"?>
+<!DOCTYPE beans SYSTEM "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<!-- une liste de produits -->
+	<bean id="groupe" class="metier.Groupe">
+		<property name="produits">
+			<list>
+				<value>Pain</value>
+				<value>Sucre</value>
+				<value>Farine</value>
+			</list>
+		</property>
+	</bean>
+</beans>

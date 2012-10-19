@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO_8859-1"?>
+<!DOCTYPE beans SYSTEM "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean id="vueproduits" class="org.springframework.web.servlet.view.JstlView">
+		<property name="url">
+			<value>/WEB-INF/vues/vueproduits.jsp</value>
+		</property>
+	</bean>
+	
+	<bean id="confirmation" class="org.springframework.web.servlet.view.JstlView">
+		<property name="url">
+			<value>/WEB-INF/vues/confirmation.jsp</value>
+		</property>
+	</bean>
+	
+	<bean id="commandAjout" class="org.springframework.web.servlet.view.JstlView">
+		<property name="url">
+			<value>/WEB-INF/vues/ajoutProduit.jsp</value>
+		</property>
+	</bean>
+	
+	<bean id="formulaire" class="org.springframework.web.servlet.view.JstlView">
+		<property name="url">
+			<value>/WEB-INF/vues/formulaire.jsp</value>
+		</property>
+	</bean>
+
+</beans>

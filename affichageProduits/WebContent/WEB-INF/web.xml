@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_0.xsd" 
+      xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_0.xsd" 
+      id="WebApp_ID" version="2.0">
+	<!-- le chargeur du contexte spring de l'application -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<!-- la servlet -->
+	<servlet>
+		<servlet-name>affichage</servlet-name>
+		<servlet-class> 
+			org.springframework.web.servlet.DispatcherServlet</servlet-class>
+	</servlet>
+	<!-- le mapping des url -->
+	<servlet-mapping>
+		<servlet-name>affichage</servlet-name>
+		<url-pattern>*.html</url-pattern>
+	</servlet-mapping>
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+</web-app>
